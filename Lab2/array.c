@@ -40,37 +40,37 @@ int get_last_index_of(const int numbers[], const size_t element_count, const int
 int get_max_index(const int numbers[], const size_t element_count)
 {
     const int* ARR_ADDRESS = numbers;
-    size_t max_value_Idx = 0;
+    size_t max_value_idx = 0;
 
     if (element_count == 0 || is_array_empty(numbers)) {
         return -1;
     }
     
     while (++ARR_ADDRESS < numbers + element_count) {
-        if (*ARR_ADDRESS > numbers[max_value_Idx]) {
-            max_value_Idx = ARR_ADDRESS - numbers;
+        if (*ARR_ADDRESS > numbers[max_value_idx]) {
+            max_value_idx = ARR_ADDRESS - numbers;
         }
     }
 
-    return max_value_Idx;
+    return max_value_idx;
 }
 
 int get_min_index(const int numbers[], const size_t element_count)
 {
     const int* ARR_ADDRESS = numbers;
-    size_t min_Value_Idx = 0;
+    size_t min_value_idx = 0;
 
     if (is_array_empty(numbers)) {
         return -1;
     }
 
     while (++ARR_ADDRESS < numbers + element_count) {
-        if (*ARR_ADDRESS < numbers[min_Value_Idx]) {
-            min_Value_Idx = ARR_ADDRESS - numbers;
+        if (*ARR_ADDRESS < numbers[min_value_idx]) {
+            min_value_idx = ARR_ADDRESS - numbers;
         }
     }
 
-    return min_Value_Idx;
+    return min_value_idx;
 }
 
 int is_all_positive(const int numbers[], const size_t element_count)
