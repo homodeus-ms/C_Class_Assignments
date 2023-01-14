@@ -40,37 +40,37 @@ int get_last_index_of(const int numbers[], const size_t element_count, const int
 int get_max_index(const int numbers[], const size_t element_count)
 {
     const int* ARR_ADDRESS = numbers;
-    size_t maxValueIDX = 0;
+    size_t max_value_Idx = 0;
 
     if (element_count == 0 || is_array_empty(numbers)) {
         return -1;
     }
     
     while (++ARR_ADDRESS < numbers + element_count) {
-        if (*ARR_ADDRESS > numbers[maxValueIDX]) {
-            maxValueIDX = ARR_ADDRESS - numbers;
+        if (*ARR_ADDRESS > numbers[max_value_Idx]) {
+            max_value_Idx = ARR_ADDRESS - numbers;
         }
     }
 
-    return maxValueIDX;
+    return max_value_Idx;
 }
 
 int get_min_index(const int numbers[], const size_t element_count)
 {
     const int* ARR_ADDRESS = numbers;
-    size_t minValueIDX = 0;
+    size_t min_Value_Idx = 0;
 
     if (is_array_empty(numbers)) {
         return -1;
     }
 
     while (++ARR_ADDRESS < numbers + element_count) {
-        if (*ARR_ADDRESS < numbers[minValueIDX]) {
-            minValueIDX = ARR_ADDRESS - numbers;
+        if (*ARR_ADDRESS < numbers[min_Value_Idx]) {
+            min_Value_Idx = ARR_ADDRESS - numbers;
         }
     }
 
-    return minValueIDX;
+    return min_Value_Idx;
 }
 
 int is_all_positive(const int numbers[], const size_t element_count)
@@ -82,7 +82,7 @@ int is_all_positive(const int numbers[], const size_t element_count)
         return FALSE;
     }
 
-    for (i = 0 ; i < element_count; ++i) {
+    for (i = 0; i < element_count; ++i) {
         if (*(ARR_ADDRESS + i) < 0) {
             return FALSE;
         }
@@ -111,7 +111,7 @@ int has_even(const int numbers[], const size_t element_count)
 
 int insert(int numbers[], const size_t element_count, const int num, const size_t pos)
 {
-    int* ARR_ADDRESS = numbers;
+    int* const ARR_ADDRESS = numbers;
     size_t index = element_count;
 
     if (pos > element_count) {
@@ -130,14 +130,14 @@ int insert(int numbers[], const size_t element_count, const int num, const size_
 
 int remove_at(int numbers[], const size_t element_count, const size_t index)
 {
-    int* ARR_ADDRESS = numbers;
+    int* const ARR_ADDRESS = numbers;
     size_t i;
 
     if (index >= element_count) {
         return FALSE;
     }
 
-    for (i = index; i < element_count; ++i) {
+    for (i = index; i < element_count - 1; ++i) {
         *(ARR_ADDRESS + i) = *(ARR_ADDRESS + i + 1);
     }
 
@@ -150,11 +150,4 @@ int is_array_empty(const int numbers[])
 {
     return numbers[0] == 0x80000000 ? TRUE : FALSE;
 }
-
-
-
-
-
-    
-
 
