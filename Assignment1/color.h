@@ -6,5 +6,5 @@ typedef enum color {
     COLOR_WHITE
 } color_t;
 
-#endif
+#endif /* COLOR_H */
 
