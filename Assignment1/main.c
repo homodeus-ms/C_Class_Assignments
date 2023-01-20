@@ -8,6 +8,7 @@ void test_swap_row(void);
 void test_insert_row(void);
 void test_remove_row(void);
 void test_copy_row(void);
+void test_remove_column(void);
 
 int main(void)
 {
@@ -30,6 +31,8 @@ int main(void)
     test_insert_row();
     test_remove_row();
     test_copy_row();
+
+    test_remove_column();
 
     return 0;
 }
@@ -184,4 +187,25 @@ void test_copy_row(void)
         assert(get_color(4, i) == get_color(2, i));
     }
 }
+void test_remove_column(void)
+{
+    size_t i;
+    size_t j;
+    test_init_game();
+
+    for (i = 0; i < 15; ++i) {
+        for (j = 0; j <15; ++j) {
+            place_stone(COLOR_BLACK, i, j);
+        }
+    }
+
+    print_array();
+
+    assert(remove_column(COLOR_BLACK, 15) == TRUE);
+    assert(get_column_count() == 14);
+
+    print_array();
+
+}
+
 

@@ -205,7 +205,6 @@ int remove_row(const color_t color, const unsigned int row)
     return TRUE;
 }
 
-
 int remove_column(const color_t color, const unsigned int col)
 {
     int score = get_score(color); 
@@ -220,9 +219,10 @@ int remove_column(const color_t color, const unsigned int col)
     while (target_col_first_row_p <= loop_end) {
         *(target_col_first_row_p) = *(target_col_first_row_p + 1);
         
-        if ((target_col_first_row_p - &s_board[i][0]) % (s_col_count - 1) == 0) {
-            target_col_first_row_p += (MAX_COL - s_col_count) + col;
+        if (target_col_first_row_p != &s_board[0][0] && (target_col_first_row_p - &s_board[i][0]) % 20 == s_col_count - 1) {
+            target_col_first_row_p += (MAX_COL - (s_col_count - 1)) + col;
             i++;
+            continue;
         }
 
         target_col_first_row_p++;
