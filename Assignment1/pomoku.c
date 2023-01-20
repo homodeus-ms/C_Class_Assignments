@@ -18,7 +18,7 @@ static unsigned int s_col_count = 15;
 static int s_player_black_score = 0;  
 static int s_player_white_score = 0;
 
-static int board[MAX_ROW][MAX_COL];
+static int s_board[MAX_ROW][MAX_COL];
 
 void init_game(void)
 { 
@@ -34,10 +34,9 @@ void init_game(void)
     for (i = 0; i < MAX_ROW; ++i) {
         for (j = 0; j < MAX_COL; ++j) {
             if (i < INIT_LENGTH && j < INIT_LENGTH) {
-                board[i][j] = -1;
-            }
-            else {
-                board[i][j] = INT_MIN;
+                s_board[i][j] = -1;
+            } else {
+                s_board[i][j] = INT_MIN;
             }
         }
     }
@@ -56,30 +55,34 @@ unsigned int get_column_count(void)
 int get_score(const color_t color)
 {
     switch (color) {
-    case COLOR_BLACK :
+    case COLOR_BLACK:
         return s_player_black_score;
-    case COLOR_WHITE :
+    case COLOR_WHITE:
         return s_player_white_score;
-    default :
+    default:
         return -1;
     }
 }
 
 int get_color(const unsigned int row, const unsigned int col)
 {
-    switch (board[row][col]) {
-    case B :
+    switch (s_board[row][col]) {
+    case B:
         return B;
-    case W : 
+    case W: 
         return W;
-    default :
+    default:
         return -1;
     }
 }
 
 int is_placeable(const unsigned int row, const unsigned int col)
 {
-    return board[row][col] == -1 ? TRUE : FALSE;
+    if (row >= s_row_count || col >= s_col_count) {
+        return FALSE;
+    }
+
+    return s_board[row][col] == -1 ? TRUE : FALSE;
 }
 
 int place_stone(const color_t color, const unsigned int row, const unsigned int col)
@@ -89,13 +92,13 @@ int place_stone(const color_t color, const unsigned int row, const unsigned int 
     }
 
     switch (color) {
-    case COLOR_BLACK :
-        board[row][col] = B;
+    case COLOR_BLACK:
+        s_board[row][col] = B;
         break;
-    case COLOR_WHITE :
-        board[row][col] = W;
+    case COLOR_WHITE:
+        s_board[row][col] = W;
         break;
-    default :
+    default:
         return FALSE;
     }
 
@@ -107,21 +110,31 @@ int place_stone(const color_t color, const unsigned int row, const unsigned int 
 int insert_row(const color_t color, const unsigned int row)
 {
     int score = get_score(color); 
-    int* inserted_start_point_p = &board[row][0]; 
-    int* last_value_p = &board[s_row_count - 1][s_col_count - 1]; 
+    int* inserted_start_point_p = &s_board[row][0]; 
+    int* last_placeable_p = &s_board[s_row_count - 1][s_col_count - 1]; 
+    size_t j;
 
-    if (!(color <= 1) || s_row_count == 20 || row >= s_row_count || score < 3) {
+    if (!(color <= 1) || s_row_count == 20 || row > s_row_count || score < 3) {
         return FALSE;
     }
 
-    while (last_value_p >= inserted_start_point_p) {
-        *(last_value_p + MAX_COL) = *last_value_p;
-        last_value_p--;
+    if (s_row_count == row) {
+        for (j = 0; j < s_col_count; ++j) {
+            s_board[row][j] = -1;
+        }
+        subtract_score_after_skill_used(color, 3);
+        s_row_count++;
+
+        return TRUE;
     }
 
-    while (inserted_start_point_p < last_value_p + s_col_count) {
-        *inserted_start_point_p = -1;    /* -1 is placeable */
-        inserted_start_point_p++;
+    while (last_placeable_p >= inserted_start_point_p) {
+        *(last_placeable_p + MAX_COL) = *last_placeable_p;
+        last_placeable_p--;
+    }
+
+    for (j = 0; j < s_col_count; ++j) {
+        s_board[row][j] = -1;
     }
 
     subtract_score_after_skill_used(color, 3);
@@ -133,24 +146,37 @@ int insert_row(const color_t color, const unsigned int row)
 int insert_column(const color_t color, const unsigned int col)
 {
     int score = get_score(color); 
-    int* inserted_col_first_row_p = &board[0][col];
-    int* inserted_col_last_row_p = &board[s_row_count - 1][col]; 
-    int* last_value_p = inserted_col_last_row_p + (s_col_count - 1 - col);  
+    size_t i;
+    int* pivot = &s_board[0][s_col_count - 1];
 
-    if (!(color <= 1) || s_col_count == 20 || col >= s_col_count || score < 3) {
+    if (!(color <= 1) || s_col_count == 20 || col > s_col_count || score < 3) {
         return FALSE;
     }
 
-    while (inserted_col_last_row_p >= inserted_col_first_row_p) {
-        *(last_value_p + 1) = *last_value_p;
-        last_value_p--;
-
-        if (inserted_col_last_row_p == last_value_p) {
-            *(last_value_p + 1) = *last_value_p;
-            *inserted_col_last_row_p = -1;
-            inserted_col_last_row_p -= MAX_COL;
-            last_value_p = inserted_col_last_row_p + (s_col_count - 1 - col); 
+    if (col == s_col_count) {
+        for (i = 0; i < s_row_count; ++i) {
+            s_board[i][col] = -1;
         }
+
+        subtract_score_after_skill_used(color, 3);
+        s_col_count++;
+        
+        return TRUE;
+    }
+    
+    while (pivot >= &s_board[0][col]) {
+        for (i = 0; i < s_row_count; ++i) {
+            *(pivot + 1) = *pivot;
+            if (pivot < &s_board[s_row_count - 1][0]) {
+                pivot += MAX_COL;
+            }
+        }
+
+        pivot -= (s_row_count - 1) * MAX_COL + 1;
+    }
+
+    for (i = 0; i < s_row_count; ++i) {
+        s_board[i][col] = -1;
     }
 
     subtract_score_after_skill_used(color, 3);
@@ -162,13 +188,13 @@ int insert_column(const color_t color, const unsigned int col)
 int remove_row(const color_t color, const unsigned int row)
 {
     int score = get_score(color); 
-    int* target_row_first_col_p = &board[row][0];
+    int* target_row_first_col_p = &s_board[row][0];
 
     if (!(color <= 1) || s_row_count == 10 || row >= s_row_count || score < 3) {
         return FALSE;
     }
 
-    while (target_row_first_col_p <= &board[s_row_count - 1][s_col_count - 1]) {
+    while (target_row_first_col_p <= &s_board[s_row_count - 1][s_col_count - 1]) {
         *target_row_first_col_p = *(target_row_first_col_p + MAX_COL);
         target_row_first_col_p++;
     }
@@ -183,8 +209,8 @@ int remove_row(const color_t color, const unsigned int row)
 int remove_column(const color_t color, const unsigned int col)
 {
     int score = get_score(color); 
-    int* target_col_first_row_p = &board[0][col];
-    const int* const loop_end = &board[s_row_count - 1][s_col_count -1];
+    int* target_col_first_row_p = &s_board[0][col];
+    const int* const loop_end = &s_board[s_row_count - 1][s_col_count - 1];
     size_t i = 0;
 
     if (!(color <= 1) || s_col_count == 10 || col >= s_col_count || score < 3) {
@@ -194,7 +220,7 @@ int remove_column(const color_t color, const unsigned int col)
     while (target_col_first_row_p <= loop_end) {
         *(target_col_first_row_p) = *(target_col_first_row_p + 1);
         
-        if ((target_col_first_row_p - &board[i][0]) % (s_col_count - 1) == 0) {
+        if ((target_col_first_row_p - &s_board[i][0]) % (s_col_count - 1) == 0) {
             target_col_first_row_p += (MAX_COL - s_col_count) + col;
             i++;
         }
@@ -218,7 +244,7 @@ int swap_rows(const color_t color, const unsigned int row0, const unsigned int r
     }
 
     for (j = 0; j < s_col_count; ++j) {
-        swap_value(&board[row0][j], &board[row1][j]);
+        swap_value(&s_board[row0][j], &s_board[row1][j]);
     }
 
     subtract_score_after_skill_used(color, 2);
@@ -236,7 +262,7 @@ int swap_columns(const color_t color, const unsigned int col0, const unsigned in
     }
 
     for (i = 0; i < s_row_count; ++i) {
-        swap_value(&board[i][col0], &board[i][col1]);
+        swap_value(&s_board[i][col0], &s_board[i][col1]);
     }
 
     subtract_score_after_skill_used(color, 2);
@@ -248,7 +274,7 @@ int copy_row(const color_t color, const unsigned int src, const unsigned int dst
 {
     int score = get_score(color); 
     size_t j;
-    int* src_p = &board[src][0];
+    int* src_p = &s_board[src][0];
 
     if (!(color <= 1) || src >= s_row_count || dst >= s_row_count || score < 4) {
         return FALSE;
@@ -268,7 +294,7 @@ int copy_column(const color_t color, const unsigned int src, const unsigned int 
 {
     int score = get_score(color); 
     size_t i;
-    int* src_p = &board[0][src];
+    int* src_p = &s_board[0][src];
 
     if (!(color <= 1) || src >= s_col_count || dst >= s_col_count || score < 4) {
         return FALSE;
@@ -302,14 +328,12 @@ void check_score(const color_t color, const unsigned int row, const unsigned int
             copied_col += j;
 
             if (copied_row >= 0 && copied_col >= 0 && copied_row < s_row_count && copied_col < s_col_count) {
-                if (board[row][col] == board[copied_row][copied_col]) {
+                if (s_board[row][col] == s_board[copied_row][copied_col]) {
                     chained_count++;
-                }
-                else {
+                } else {
                     break;
                 }
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -322,14 +346,12 @@ void check_score(const color_t color, const unsigned int row, const unsigned int
             copied_col -= j;
 
             if (copied_row >= 0 && copied_col >= 0 && copied_row < s_row_count && copied_col < s_col_count) {
-                if (board[row][col] == board[copied_row][copied_col]) {
+                if (s_board[row][col] == s_board[copied_row][copied_col]) {
                     chained_count++;
-                }
-                else {
+                } else {
                     break;
                 }
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -340,8 +362,7 @@ void check_score(const color_t color, const unsigned int row, const unsigned int
 
         if (j != 1) {
             j++;
-        }
-        else {
+        } else {
             i++;
             j = -1;
         }
@@ -354,19 +375,18 @@ void add_score_after_chaining(const color_t color, const unsigned int chained_co
     
     if (color == COLOR_BLACK) {
         s_player_black_score += chained_count - 4;
-    }
-    else {
+    } else {
         s_player_white_score += chained_count - 4;
     }
 }
+
 void subtract_score_after_skill_used(const color_t color, const unsigned int score)
 {
     assert(color == COLOR_BLACK || color == COLOR_WHITE);    
 
     if (color == COLOR_BLACK) {
         s_player_black_score -= score;
-    }
-    else {
+    } else {
         s_player_white_score -= score;
     }
 }
@@ -385,8 +405,8 @@ void print_array(void)
 
     printf("\n");
     for (i = 0; i < MAX_ROW; ++i) {
-        for (j = 0; j <MAX_COL; ++j) {
-            printf("%d ", board[i][j]);
+        for (j = 0; j < MAX_COL; ++j) {
+            printf("%d ", s_board[i][j]);
         }
         printf("\n");
     }
