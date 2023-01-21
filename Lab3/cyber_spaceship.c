@@ -44,28 +44,13 @@ const char* get_longest_safe_zone_or_null(const char* const cab_start_location, 
     return cab_start_location + longest_safe_area_start_offset;
 }
 
-int is_cluster_exist(const char* current_location, const char* const cluster_start_location, const size_t cluster_length)
-{
-    return current_location >= cluster_start_location ? current_location < cluster_start_location + cluster_length : FALSE;
-}
-
-int is_here_safe(const size_t nested_cluster)
-{
-    return (nested_cluster & 0x1) == 0 ? TRUE : FALSE;
-}
-
-int do_round(double num)
-{
-    int integer_part = (int)num;
-
-    return num - integer_part >= 0.5 ? num + 1 : num;
-}
-
 int get_travel_time(const char* const cab_start_location, const size_t cab_length, const char* const cluster_start_locations[], const size_t cluster_lengths[], const size_t cluster_count)
 {
     size_t i;
     size_t j;
     size_t nested_cluster;
+    size_t safe_area_count = 0;
+
     double travel_time = 0.0;
 
     if (cluster_count == 0) {
@@ -83,14 +68,34 @@ int get_travel_time(const char* const cab_start_location, const size_t cab_lengt
         }
 
         if (is_here_safe(nested_cluster)) {
-            travel_time += 0.1;
-        } else {
-            travel_time += 0.2;
-        }
+            safe_area_count++;
+        } 
     }
+
+    travel_time = safe_area_count / 10.0 + (cab_length - safe_area_count) / 5.0;
 
     return do_round(travel_time);
 }
+
+int is_cluster_exist(const char* current_location, const char* const cluster_start_location, const size_t cluster_length)
+{
+    return current_location >= cluster_start_location ? current_location < cluster_start_location + cluster_length : FALSE;
+}
+
+int is_here_safe(const size_t nested_cluster)
+{
+    return (nested_cluster & 0x1) == 0 ? TRUE : FALSE;
+}
+
+int do_round(double num)
+{
+    int integer_part = (int)num;
+
+    return num - integer_part >= 0.5 ? num + 1 : num;
+}
+
+
+
 
         
             
