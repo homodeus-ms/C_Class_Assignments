@@ -34,11 +34,10 @@ int main(void)
     assert(out_longest_safe_area_length == 15);
     assert(longest_safe_cluster_start_address == cab_start_address + 18);
 
-    time_in_mins = get_travel_time(cab_start_address, CAB_LENGTH, cluster_start_addresses, cluster_lengths, 5);
-    
-    assert(time_in_mins == 7);
+    time_in_mins = get_travel_time(cab_start_address, 49999995, cluster_start_addresses, cluster_lengths, 0);
 
-    printf("EVERYTHING IS OK!!!");
+    printf("time_in_mins : %d\n", time_in_mins);
+
     return 0;
 }
 

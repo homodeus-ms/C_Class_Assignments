@@ -58,7 +58,7 @@ int do_round(double num)
 {
     int integer_part = (int)num;
 
-    return (num - integer_part) - 0.000000001 > 0.5 ? num + 1 : num;
+    return num - integer_part >= 0.5 ? num + 1 : num;
 }
 
 int get_travel_time(const char* const cab_start_location, const size_t cab_length, const char* const cluster_start_locations[], const size_t cluster_lengths[], const size_t cluster_count)
