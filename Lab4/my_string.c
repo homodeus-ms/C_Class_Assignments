@@ -29,6 +29,7 @@ int index_of(const char* str, const char* word)
     while (*str != '\0') {
         while (*(str + s_offset++) == *word++) {
             if (*word == '\0') {
+                s_offset = 0;
                 return str - str_start;
             }
         }
@@ -37,6 +38,7 @@ int index_of(const char* str, const char* word)
         word = word_start;
     }   
 
+    s_offset = 0;
     return -1;
 }
 
