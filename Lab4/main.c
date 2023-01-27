@@ -8,63 +8,44 @@ void print_str(char* str);
 
 int main(void)
 {
-    const char* str = "We all live in a yellow submarine";
-    char str_cpy[34];
-    const char* token;
-    int res;
+    /*  해당 테스트를 통과하더라도 연속된 공백문자를 제대로 처리하지 않을 경우
+        빌드테스트에서 크래시가 발생할 수 있습니다
+    */  
+    { /* reverse_by_words */
 
-    strncpy(str_cpy, str, 33);
-    str_cpy[33] = '\0';
+        char test1[] = "  ";
+        char test2[] = "a  bc";
+        char test3[] = "ab  c";
+        char test4[] = "  a  b";
+        char test5[] = "  a  bc  ";
 
-    reverse(str_cpy);
-    assert(strcmp("enirambus wolley a ni evil lla eW", str_cpy) == 0);
+        reverse_by_words(test1);
+        assert(strcmp(test1, "  ") == 0);
+        printf("test1 pass\n");
 
-    assert(index_of(str, "all ") == 3);
-    res = index_of(str, "marine");
-    printf("marine : [%d]\n", res);
+        reverse_by_words(test2);
+        assert(strcmp(test2, "a  cb") == 0);
+        printf("test2 pass\n");
 
-    assert(index_of(str, "marine") == 27);
-    assert(index_of(str, "all good") == -1);
-    assert(index_of(str, "marinett") == -1);
+        reverse_by_words(test3);
+        assert(strcmp(test3, "ba  c") == 0);
+        printf("test3 pass\n");
 
-    reverse(str_cpy);
+        reverse_by_words(test4);
+        assert(strcmp(test4, "  a  b") == 0);
+        printf("test4 pass\n");
 
-    assert(strcmp(str_cpy, str) == 0);
+        reverse_by_words(test5);
+        assert(strcmp(test5, "  a  cb  ") == 0);
+        printf("test5 pass\n");
 
-    reverse_by_words(str_cpy);
-
-    assert(strcmp("eW lla evil ni a wolley enirambus", str_cpy) == 0);
-    reverse_by_words(str_cpy);
-
-    assert(strcmp(str_cpy, str) == 0);
-
-    assert(tokenize(NULL, " ") == NULL);
-
-    token = tokenize(str_cpy, " ");
-    assert(token == str_cpy);
-    assert(strcmp(token, "We") == 0);
-
-    token = tokenize(NULL, " ");
-    assert(token == str_cpy + 3);
-    assert(strcmp(token, "all") == 0);
-
-    token = tokenize(NULL, " ");
-    assert(token == str_cpy + 7);
-    assert(strcmp(token, "live") == 0);
-
-    token = reverse_tokenize(NULL, " ");
-    assert(token == str_cpy + 12);
-    assert(strcmp(token, "ni") == 0);
-
-    token = reverse_tokenize(NULL, " ");
-    token = reverse_tokenize(NULL, " ");
-    assert(token == str_cpy + 17);
-    assert(strcmp(token, "wolley") == 0);
-
-    printf("everthing!");
+        printf("done\n");
+    }
 
     return 0;
 }
+
+
 
 void print_str(char* str)
 {

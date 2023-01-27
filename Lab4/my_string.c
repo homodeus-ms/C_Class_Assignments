@@ -15,20 +15,25 @@ void reverse(char* str)
 
 int index_of(const char* str, const char* word)
 {
+    static s_offset = 0;
     const char* str_start = str;
     const char* word_start = word;
 
-    if (*word == '\0') {
+    if (str == NULL || word == NULL) {
         return -1;
+    }
+    if (*word == '\0') {
+        return 0;
     }
     
     while (*str != '\0') {
-        while (*str++ == *word++) {
+        while (*(str + s_offset++) == *word++) {
             if (*word == '\0') {
-                return (str - str_start) - (word - word_start);
+                return str - str_start;
             }
         }
-
+        s_offset = 0;
+        str++;
         word = word_start;
     }   
 
@@ -48,30 +53,35 @@ void reverse_by_words(char* str)
 
 char* tokenize(char* str_or_null, const char* delims)
 {
-    static char* str_ptr = NULL;
-    static char* str_ptr_start = NULL;
+    static char* s_str_ptr = NULL;
+    static char* s_str_ptr_start = NULL;
     const char* delims_start = delims;
     
     if (str_or_null != NULL) {
-        str_ptr = str_or_null;
-        str_ptr_start = str_or_null;
-    } else if (str_ptr != NULL) {
-        str_ptr_start = str_ptr;
+        s_str_ptr = str_or_null;
+        s_str_ptr_start = str_or_null;
+    } else if (s_str_ptr != NULL) {
+        s_str_ptr_start = s_str_ptr;
     } else {
         return NULL;
     }
 
-    while (*str_ptr != '\0') {
-        while (*(str_ptr - 1) != '\0' && *delims != '\0') {
-            if (*str_ptr == *delims) {
-                *str_ptr = '\0';
-                str_ptr++;
-                return str_ptr_start;
+    while (*s_str_ptr != '\0') {
+        while (*delims != '\0') {
+            if (*s_str_ptr == *delims) {
+                *s_str_ptr = '\0';
+                s_str_ptr++;
+
+                if (*s_str_ptr_start == '\0') {
+                    continue;
+                } else {
+                   return s_str_ptr_start;
+                }
             } else {
                 delims++;
             }
         }
-        str_ptr++;
+        s_str_ptr++;
         delims = delims_start;
     }
  
@@ -97,7 +107,7 @@ int get_string_length(const char* str)
     while (*start++ != '\0') {
     }
 
-    return start - str -1;
+    return start - str - 1;
 }
 
 char* get_blank_or_end_address(char* str)
