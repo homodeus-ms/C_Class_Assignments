@@ -15,7 +15,7 @@ void reverse(char* str)
 
 int index_of(const char* str, const char* word)
 {
-    static s_offset = 0;
+    static size_t s_offset = 0;
     const char* str_start = str;
     const char* word_start = word;
 
@@ -61,10 +61,15 @@ char* tokenize(char* str_or_null, const char* delims)
         s_str_ptr = str_or_null;
         s_str_ptr_start = str_or_null;
     } else if (s_str_ptr != NULL) {
+        if (*s_str_ptr == '\0') {
+            return NULL;
+        }
         s_str_ptr_start = s_str_ptr;
     } else {
         return NULL;
     }
+
+    
 
     while (*s_str_ptr != '\0') {
         while (*delims != '\0') {
@@ -73,9 +78,11 @@ char* tokenize(char* str_or_null, const char* delims)
                 s_str_ptr++;
 
                 if (*s_str_ptr_start == '\0') {
+                    delims = delims_start;
+                    s_str_ptr_start++;
                     continue;
                 } else {
-                   return s_str_ptr_start;
+                    return s_str_ptr_start;
                 }
             } else {
                 delims++;
@@ -84,8 +91,10 @@ char* tokenize(char* str_or_null, const char* delims)
         s_str_ptr++;
         delims = delims_start;
     }
- 
-    return NULL;
+    
+    s_str_ptr = NULL;
+
+    return *s_str_ptr_start == '\0' ? s_str_ptr_start + 1 : s_str_ptr_start;
 }
 
 char* reverse_tokenize(char* str_or_null, const char* delims)
