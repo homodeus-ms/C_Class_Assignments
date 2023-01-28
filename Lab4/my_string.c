@@ -103,7 +103,7 @@ char* reverse_tokenize(char* str_or_null, const char* delims)
 {
     char* token = tokenize(str_or_null, delims);
     if (token != NULL) {
-        reverse_by_words(token);
+        reverse(token);
         return token;
     } else {
         return NULL;
