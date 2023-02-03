@@ -76,8 +76,8 @@ int print_receipt(const char* filename, time_t timestamp)
         return FALSE;
     }
 
-    t = localtime(&timestamp);
-    sprintf(TIME_INFO, "%04d-%02d-%02d %02d:%02d:%02d", t->tm_year + 1900, t->tm_mon + 1, t ->tm_mday, t->tm_hour - 9, t->tm_min, t->tm_sec);
+    t = gmtime(&timestamp);
+    sprintf(TIME_INFO, "%04d-%02d-%02d %02d:%02d:%02d", t->tm_year + 1900, t->tm_mon + 1, t ->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 
     stream = fopen(filename, "w");
 
