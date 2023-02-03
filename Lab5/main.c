@@ -3,10 +3,6 @@
 #include <time.h>
 #include "receipter.h"
 
-void print_array(void);
-void print_array2(void);
-void print_etcs(void);
-
 int main(void)
 {
     time_t time = 1569472997;

@@ -1,20 +1,13 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
 
 #include "receipter.h"
 
 #define MENU_LENGTH (25)
 #define MESSAGE_MAX_LENGTH (75)
 #define RECEIPT_MAX_WIDTH (50)
-
-void print_array(void);
-void print_array2(void);
-void print_etcs(void);
 
 static size_t s_order_no = 0;
 static size_t s_item_count = 0;
@@ -150,30 +143,7 @@ void initialize_statics(void)
     s_message[0] = '\0';
 }
 
-void print_array(void)
-{
-    char* start = s_menus;
 
-    while (start < s_menus + 200) {
-        printf("%c", *start);
-        start++;
-    }
-    printf("\n");
-}
-void print_array2(void)
-{
-    size_t i;
-    for (i = 0; i < 11; ++i) {
-        printf("%f ", s_prices[i]);
-    }
-    printf("\n");
-}
-
-void print_etcs(void)
-{
-    printf("tips : %f\n", s_tip);
-    printf("message : %s\n", s_message);
-}
 
 
 
