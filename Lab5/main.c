@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <assert.h>
-#include <time.h>
 #include "receipter.h"
 
 int main(void)
