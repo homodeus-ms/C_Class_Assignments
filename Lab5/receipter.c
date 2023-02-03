@@ -57,7 +57,7 @@ int print_receipt(const char* filename, time_t timestamp)
     const char* RESTAURANT_NAME = "Charles' Seafood";
     const char* TAX_REPORT_NO = "Tax#-51234";
     struct tm* t;
-    char TIME_INFO[20];
+    char time_info[20];
     char* menu_name_token;
     double menu_price;
     double sub_total = 0;
@@ -69,13 +69,13 @@ int print_receipt(const char* filename, time_t timestamp)
     }
 
     t = gmtime(&timestamp);
-    sprintf(TIME_INFO, "%04d-%02d-%02d %02d:%02d:%02d", t->tm_year + 1900, t->tm_mon + 1, t ->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
+    sprintf(time_info, "%04d-%02d-%02d %02d:%02d:%02d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec);
 
     stream = fopen(filename, "w");
 
     fprintf(stream, "%-s\n", RESTAURANT_NAME);
     fprintf(stream, "--------------------------------------------------\n");
-    fprintf(stream, "%-45s", TIME_INFO);
+    fprintf(stream, "%-45s", time_info);
     fprintf(stream, "%05d\n", s_order_no);
     fprintf(stream, "--------------------------------------------------\n");
 
