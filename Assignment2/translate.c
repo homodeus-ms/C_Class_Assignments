@@ -12,6 +12,7 @@ int translate(int argc, const char** argv)
 
     int length1;
     int length2;
+    int buffer2_length;
     int argv_index1 = 1;
     int argv_index2 = 2;
     
@@ -43,6 +44,12 @@ int translate(int argc, const char** argv)
     set_buffer(buffer1, argv[argv_index1], &err_no);
     set_buffer(buffer2, argv[argv_index2], &err_no);
 
+    buffer2_length = strlen(buffer2);
+
+    fprintf(stdout, "%s\n", buffer1);
+    fprintf(stdout, "%s\n", buffer1);
+    
+
     if (err_no != 0) {
         return err_no;
     }
@@ -58,12 +65,12 @@ int translate(int argc, const char** argv)
                 int insensitive_c = *buffer1_p ^ 0x20;
                 if (c == *buffer1_p || c == insensitive_c) {
                     offset = buffer1_p - buffer1;
-                    temp_c = offset < length2 ? buffer2[offset] : buffer2[length2 - 1];
+                    temp_c = offset < buffer2_length ? buffer2[offset] : buffer2[buffer2_length - 1];
                 }
             } else {
                 if (c == *buffer1_p) {
                     offset = buffer1_p - buffer1;
-                    temp_c = offset < length2 ? buffer2[offset] : buffer2[length2 - 1];
+                    temp_c = offset < buffer2_length ? buffer2[offset] : buffer2[buffer2_length - 1];
                 }
             }
             buffer1_p++;
