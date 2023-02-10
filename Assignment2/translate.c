@@ -46,10 +46,6 @@ int translate(int argc, const char** argv)
 
     buffer2_length = strlen(buffer2);
 
-    fprintf(stdout, "%s\n", buffer1);
-    fprintf(stdout, "%s\n", buffer1);
-    
-
     if (err_no != 0) {
         return err_no;
     }
