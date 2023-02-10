@@ -92,11 +92,11 @@ void set_buffer(char* buffer, const char* input, error_code_t* err_no)
     int out_use_as_char = 0;
     size_t input_length;
     const char* range_end = NULL;
-    
+
     while (*input_p != '\0') {
         error_number = 0;
         c = *input_p;
-        
+
         if (c == '\\') {
             c = combine_escape_letters(input_p, &error_number);
 
@@ -110,7 +110,7 @@ void set_buffer(char* buffer, const char* input, error_code_t* err_no)
         } else if (c == '-') {
             int range;
             input_length = strlen(input);
-            
+     
             range = get_range(input, input_p, buffer_p, input_length, &error_number, &out_use_as_char, range_end);
 
             if (range == -1 && out_use_as_char == 1) {
@@ -186,7 +186,7 @@ int get_range(const char* arr, const char* ptr, char* buffer, size_t arr_length,
     int start;
     int end;
 
-    if (ptr == arr || ptr == arr + arr_length) {
+    if (ptr == arr || ptr == arr + arr_length - 1) {
         *out_use_as_char = 1;
         return -1;
     }
@@ -225,7 +225,7 @@ int get_range(const char* arr, const char* ptr, char* buffer, size_t arr_length,
 void print_arr(char* arr)
 {
     int count = 0;
-    while(*arr != '\0') {
+    while (*arr != '\0') {
         printf("[%d]:%d ", count, *arr);
         arr++;
         count++;
