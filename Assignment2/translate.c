@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <string.h>
 
@@ -20,7 +18,6 @@ int translate(int argc, const char** argv)
     error_code_t err_no = 0;
 
     char* buffer1_p;
-    char* buffer2_p;
     
     if (argc < 3 || argc > 4) {
         err_no = ERROR_CODE_WRONG_ARGUMENTS_NUMBER;
@@ -42,7 +39,6 @@ int translate(int argc, const char** argv)
     }
 
     buffer1_p = buffer1;
-    buffer2_p = buffer2;
 
     set_buffer(buffer1, argv[argv_index1], &err_no);
     set_buffer(buffer2, argv[argv_index2], &err_no);
