@@ -111,22 +111,32 @@ void set_buffer(char* buffer, const char* input, error_code_t* err_no)
             int range;
             input_length = strlen(input);
             
-            range = get_range(input, input_p, input_length, &error_number, &out_use_as_char, range_end);
+            range = get_range(input, input_p, buffer_p, input_length, &error_number, &out_use_as_char, range_end);
 
             if (range == -1 && out_use_as_char == 1) {
                 *buffer_p = c;
+            } else if (error_number == 3) {
+                *err_no = error_number;
+                return;
             } else if (error_number >= 4) {
                 *err_no = error_number;
                 return;
             } else {
                 size_t i;
-                char start_value = *(input_p - 1);
+                char start_value = *(input_p + 1) == '\\' ? *(buffer_p - 1) : *(input_p - 1);
 
                 for (i = 0; i < range; ++i) {
                     *buffer_p++ = ++start_value;
                 }
-                range_end = input_p + 1;
-                input_p += 2;
+
+                if (*(input_p + 1) == '\\') {
+                    range_end = input_p + 2;
+                    input_p += 3;
+                } else {
+                    range_end = input_p + 1;
+                    input_p += 2;
+                }
+
                 continue;
             }
         } else {
@@ -170,8 +180,11 @@ int combine_escape_letters(const char* ptr, error_code_t* error_number)
     }
 }
 
-int get_range(const char* arr, const char* ptr, size_t arr_length, error_code_t* error_number, int* out_use_as_char, const char* range_end)
+int get_range(const char* arr, const char* ptr, char* buffer, size_t arr_length, error_code_t* error_number, int* out_use_as_char, const char* range_end)
 {
+
+    int start;
+    int end;
 
     if (ptr == arr || ptr == arr + arr_length) {
         *out_use_as_char = 1;
@@ -182,16 +195,42 @@ int get_range(const char* arr, const char* ptr, size_t arr_length, error_code_t*
         return -1;
     }
        
-    if (*(ptr - 1) > *(ptr + 1)) {
+    start = *(buffer - 1);
+    end = *(ptr + 1);
+
+    if (end == '\\') {
+        error_code_t temp_error = 0;
+        int temp = combine_escape_letters(ptr + 1, &temp_error);
+
+        if (temp == -1) {
+            *error_number = temp_error;
+            return -1;
+        } else {
+            end = temp;
+        }
+    }
+
+    if (start > end) {
         *error_number = ERROR_CODE_INVALID_RANGE;
         return -1;
     }
-    if (arr_length + (*(ptr + 1) - *(ptr - 1)) > BUFFER_LENGTH) {
+    if (arr_length + (end - start) > BUFFER_LENGTH) {
         *error_number = ERROR_CODE_ARGUMENT_TOO_LONG;
         return 0xffff;
     } else {
-        return *(ptr + 1) - *(ptr - 1);
+        return end - start;
     }
+}
+
+void print_arr(char* arr)
+{
+    int count = 0;
+    while(*arr != '\0') {
+        printf("[%d]:%d ", count, *arr);
+        arr++;
+        count++;
+    }
+    printf("\n");
 }
 
 

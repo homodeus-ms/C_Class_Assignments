@@ -20,7 +20,9 @@ void set_buffer(char* buffer, const char* input, error_code_t* err_no);
 
 int combine_escape_letters(const char* ptr, error_code_t* error_number);
 
-int get_range(const char* arr, const char* ptr, size_t arr_length, error_code_t* error_number, int* out_use_as_char, const char* range_end);
+int get_range(const char* arr, const char* ptr, char* buffer, size_t arr_length, error_code_t* error_number, int* out_use_as_char, const char* range_end);
+
+void print_arr(char* arr);
 
 #endif /* TRANSLATE_H */
 
