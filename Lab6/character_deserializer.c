@@ -26,7 +26,6 @@ int get_character(const char* filename, character_v3_t* out_character)
     
     stream = fopen(filename, "r");
     if (stream == NULL) {
-        perror("error, while opening file");
         return -1;
     }
 
@@ -47,7 +46,6 @@ int get_character(const char* filename, character_v3_t* out_character)
         ver = 3;
         goto ver3;
     }
-    
 
 ver1:
     
@@ -93,7 +91,6 @@ ver1:
                 }
                 break;
             default:
-                printf("error, wrong titles, file_ver_1\n");
                 break;
             }
         }
@@ -114,11 +111,9 @@ ver1:
 
 ver2:
     if (fgets(buffer_values, 512, stream) == NULL) {
-        perror("error, read to buffer_1st_line\n");
         return -2;
     }
     if (fgets(buffer_values, 512, stream) == NULL) {
-        perror("error, read to buffer_2nd_line\n");
         return -3;
     }
 
@@ -174,16 +169,13 @@ ver2:
 ver3:
 
     if (fgets(buffer_values, 512, stream) == NULL) {
-        perror("error, read to buffer_1st_line\n");
         return -4;
     }
     if (fgets(buffer_values, 512, stream) == NULL) {
-        perror("error, read to buffer_2nd_line\n");
         return -5;
     }
 
     fread_count = fread(buffer_minion_values, 1, 512, stream);
-    
 
     while (*values_ptr++ != ' ') {
     }
@@ -273,7 +265,7 @@ ver3:
                 char* d_ptr = (char*)&d;
                 size_t i;
                 if (sscanf(minion_ptr, "%d", &d) == 0) {
-                    perror("error, sscanf!\n");
+                    return -6;
                 }
                 for (i = 0; i < 4; ++i) {
                     *out_v3++ = *d_ptr++;
