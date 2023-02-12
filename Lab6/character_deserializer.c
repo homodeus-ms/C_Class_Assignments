@@ -275,7 +275,7 @@ ver3:
                 break;
             }
         }
-        *buffer_ptr= '\0';
+        *buffer_ptr = '\0';
 
         strcpy(out_v3, buffer);
 
