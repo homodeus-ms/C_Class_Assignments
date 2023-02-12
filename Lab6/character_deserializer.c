@@ -1,3 +1,6 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+
 #include <stdio.h>
 #include <string.h>
 
@@ -23,6 +26,7 @@ int get_character(const char* filename, character_v3_t* out_character)
     char* minion_ptr_end;
     char* out_v3 = (char*)out_character;
     size_t written_minion_count = 0;
+    size_t letter_count = 0;
     
     stream = fopen(filename, "r");
     if (stream == NULL) {
@@ -117,11 +121,20 @@ ver2:
         return -3;
     }
 
+    while (*values_ptr != ',') {
+        letter_count++;
+        if (letter_count <= 50) {
+            *buffer_ptr++ = *values_ptr++;
+        } else {
+            break;
+        }
+    }
+    *buffer_ptr = '\0';
+    
+    strcpy(out_character->name, buffer);
+
     while (*values_ptr++ != ',') {
     }
-    *(values_ptr - 1) = '\0';
-
-    strcpy(out_character->name, buffer_values);
 
     if (sscanf(values_ptr, "%d", &value) == 1) {
         out_character->level = value;
@@ -177,11 +190,17 @@ ver3:
 
     fread_count = fread(buffer_minion_values, 1, 512, stream);
 
-    while (*values_ptr++ != ' ') {
+    while (*values_ptr != ' ') {
+        letter_count++;
+        if (letter_count <= 50) {
+            *buffer_ptr++ = *values_ptr++;
+        } else {
+            break;
+        }
     }
-    *(values_ptr - 1) = '\0';
+    *buffer_ptr = '\0';
 
-    strcpy(out_character->name, buffer_values);
+    strcpy(out_character->name, buffer);
 
     values_ptr = skip_delims(values_ptr, '|');
 
@@ -247,8 +266,16 @@ ver3:
     }
 
     while (minion_ptr <= minion_ptr_end) {
+
+        letter_count = 0;
+
         while (*minion_ptr != ' ') {
-            *out_v3++ = *minion_ptr++;
+            letter_count++;
+            if (letter_count <= 50) {
+                *out_v3++ = *minion_ptr++;
+            } else {
+                break;
+            }
         }
         *out_v3 = '\0';
 

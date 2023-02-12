@@ -88,8 +88,9 @@ int main(void)
     assert(wonderwoman_v3.minions[1].health == 45);
     assert(wonderwoman_v3.minions[1].strength == 20);
     assert(wonderwoman_v3.minions[1].defence == 4);
-    
-    
+
+    printf("No Assert!\n");
+
     return 0;
 }
 
