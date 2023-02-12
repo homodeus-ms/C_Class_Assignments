@@ -7,8 +7,8 @@ int get_character(const char* filename, character_v3_t* out_character)
 {
     char buffer[NAME_LENGTH + 1];
     char name_input[NAME_LENGTH + 1];
-    char buffer_values[512];
-    char buffer_minion_values[512];
+    char buffer_values[1024];
+    char buffer_minion_values[1024];
 
     FILE* stream;
 
@@ -111,10 +111,10 @@ ver1:
 
 
 ver2:
-    if (fgets(buffer_values, 512, stream) == NULL) {
+    if (fgets(buffer_values, 1024, stream) == NULL) {
         return -2;
     }
-    if (fgets(buffer_values, 512, stream) == NULL) {
+    if (fgets(buffer_values, 1024, stream) == NULL) {
         return -3;
     }
 
@@ -178,14 +178,15 @@ ver2:
 
 ver3:
 
-    if (fgets(buffer_values, 512, stream) == NULL) {
+    if (fgets(buffer_values, 1024, stream) == NULL) {
         return -4;
     }
-    if (fgets(buffer_values, 512, stream) == NULL) {
+    if (fgets(buffer_values, 1024, stream) == NULL) {
         return -5;
     }
 
-    fread_count = fread(buffer_minion_values, 1, 512, stream);
+    fread_count = fread(buffer_minion_values, 1, 1024, stream);
+    buffer_minion_values[fread_count] = '\0';
 
     while (*values_ptr != ' ') {
         letter_count++;
@@ -262,25 +263,27 @@ ver3:
     while (*minion_ptr++ != '\n') {
     }
 
-    while (minion_ptr <= minion_ptr_end) {
-
+    while (minion_ptr < minion_ptr_end) {
+        buffer_ptr = buffer;
         letter_count = 0;
 
         while (*minion_ptr != ' ') {
             letter_count++;
             if (letter_count <= 50) {
-                *out_v3++ = *minion_ptr++;
+                *buffer_ptr++ = *minion_ptr++;
             } else {
                 break;
             }
         }
-        *out_v3 = '\0';
+        *buffer_ptr= '\0';
+
+        strcpy(out_v3, buffer);
 
         minion_ptr = skip_delims(minion_ptr, '|');
 
         out_v3 = (char*)out_character + 52 + (sizeof(out_character->minions[0].name) * (written_minion_count + 1)) + (sizeof(out_character->minions[0].unused) * (written_minion_count + 1)) + ((sizeof(unsigned int) * 3 * written_minion_count));
     
-        while (*minion_ptr != '\n') {
+        while (*minion_ptr != '\n' && (minion_ptr < minion_ptr_end)) {
             if (*minion_ptr == ' ' || *minion_ptr == '|') {
                 minion_ptr++;
                 continue;
@@ -317,11 +320,13 @@ char* skip_delims(char* ptr, char delim)
     while (*ptr == ' ') {
         ptr++;
     }
-    while (*ptr != '\0' && *ptr++ != delim) {
-        if (*ptr == '\n') {
-            return ptr;
-        }
+    while (*ptr != '\0' && *ptr != '\n' && *ptr++ != delim) {
     }
+
+    if (*ptr == '\0' || *ptr == '\n') {
+        return ptr;
+    }
+
     while (*ptr == ' ') {
         ptr++;
     }

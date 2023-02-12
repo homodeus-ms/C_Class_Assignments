@@ -1,0 +1,5 @@
+name                                                    | level | health | mana | strength | dexterity | intelligence | armour | evasion | fire_res | cold_res | lightning_res | leadership | minion_count
+v3_super_great_hyper_ultra_vibranium_superalloyed_robot | 55    | 320    | 75   | 75       | 55        | 35           | 45     | 30      | 20       | 22       | 15            | 20         | 2
+name                                                     | health | strength | defence
+super_ultra_nuclear_blast_supersonic_missile_launcher    | 50     | 15       | 5
+supernova_ultra_high_temperature_plasma_one-handed_sword | 45     | 20       | 4
