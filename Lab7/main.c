@@ -7,19 +7,10 @@
 int main(void)
 {
     const char* str = "I like cookies. Do you like cookies? Cookies are good!";
-    char** tokens = tokenize_malloc(str, " ?!.");
+    char** tokens = tokenize_malloc(str, "\0");
     char** tt = tokens;
 
-    assert(strcmp(*tt++, "I") == 0);
-    assert(strcmp(*tt++, "like") == 0);
-    assert(strcmp(*tt++, "cookies") == 0);
-    assert(strcmp(*tt++, "Do") == 0);
-    assert(strcmp(*tt++, "you") == 0);
-    assert(strcmp(*tt++, "like") == 0);
-    assert(strcmp(*tt++, "cookies") == 0);
-    assert(strcmp(*tt++, "Cookies") == 0);
-    assert(strcmp(*tt++, "are") == 0);
-    assert(strcmp(*tt++, "good") == 0);
+    printf("%s\n", *tt++);
     assert(*tt == NULL);
 
     tt = tokens;

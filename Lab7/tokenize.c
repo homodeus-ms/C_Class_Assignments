@@ -13,9 +13,13 @@ char** tokenize_malloc(const char* str, const char* delim)
     const char* delim_start = delim;
     size_t i = 0;
     char* token;
+    size_t result_size;
     size_t str_size = strlen(str);
     copied_str = malloc(str_size + 1);
-    result = malloc(str_size * 4);
+
+    result_size = str_size == 1 ? 2 : str_size * 4;
+
+    result = malloc(result_size);
     
     p = copied_str;
     token = copied_str;
@@ -51,6 +55,7 @@ char** tokenize_malloc(const char* str, const char* delim)
         token_malloc = token;
         result[i++] = token_malloc;
     }
+    
     result[i] = NULL;
 
     free(copied_str);
