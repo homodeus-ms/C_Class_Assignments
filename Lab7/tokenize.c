@@ -17,7 +17,7 @@ char** tokenize_malloc(const char* str, const char* delim)
     size_t str_size = strlen(str);
     copied_str = malloc(str_size + 1);
 
-    result_size = str_size <= 1 ? 2 : str_size * 4;
+    result_size = str_size <= 1 ? 8 : str_size * 4;
 
     result = malloc(result_size);
     
