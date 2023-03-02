@@ -51,14 +51,15 @@ char** tokenize_malloc(const char* str, const char* delim)
     }
 
     if (*token != '\0') {
-        char* token_malloc = malloc(sizeof(char*));
-        token_malloc = token;
+        char* token_malloc = malloc(p - token + 1);
+        memcpy(token_malloc, token, p - token + 1);
         result[i++] = token_malloc;
     }
     
     result[i] = NULL;
 
     free(copied_str);
+    copied_str = NULL;
 
     return result;
 }
