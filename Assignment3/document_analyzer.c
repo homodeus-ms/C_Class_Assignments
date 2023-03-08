@@ -1,8 +1,3 @@
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "document_analyzer.h"
 
 static char* s_buffer = NULL;
