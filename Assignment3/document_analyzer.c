@@ -103,7 +103,7 @@ long read_in(FILE* stream, size_t* out_word_count)
     char* p = s_buffer;
 
     c1 = fgetc(stream);
-    while( c1 != EOF) {
+    while (c1 != EOF) {
         c2 = fgetc(stream);
         *p++ = c1;
         read_count++;
