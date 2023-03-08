@@ -2,9 +2,9 @@
 
 static char* s_buffer = NULL;
 
-static const char** s_sentence;
-static const char*** s_paragraph;
-static const char**** s_document;
+static const char** s_sentence = NULL;
+static const char*** s_paragraph = NULL;
+static const char**** s_document = NULL;
 
 int load_document(const char* document)
 {
@@ -15,6 +15,10 @@ int load_document(const char* document)
     const char** pp;
     const char*** ppp;
     const char**** pppp;
+
+    if (s_buffer != NULL) {
+        dispose();
+    }
 
     stream = fopen(document, "r");
     if (stream == NULL) {
@@ -31,8 +35,6 @@ int load_document(const char* document)
     s_buffer[length] = '\0';
 
     fclose(stream);
-
-/* make _tree */
     
     s_sentence = malloc((word_count + 1) * sizeof(char*));
     s_paragraph = malloc((word_count + 1) * sizeof(char*));
@@ -101,7 +103,7 @@ long read_in(FILE* stream, size_t* out_word_count)
     char* p = s_buffer;
 
     c1 = fgetc(stream);
-    while( c1!= EOF) {
+    while( c1 != EOF) {
         c2 = fgetc(stream);
         *p++ = c1;
         read_count++;
@@ -128,10 +130,10 @@ void dispose(void)
     s_sentence = NULL;
 
     free(s_paragraph);
-    s_sentence = NULL;
+    s_paragraph = NULL;
 
     free(s_document);
-    s_sentence = NULL;
+    s_document = NULL;
 }
 
 unsigned int get_total_word_count(void)
@@ -298,7 +300,7 @@ int print_as_tree(const char* filename)
 
     FILE* stream;
 
-    if (s_buffer == NULL) {
+    if (s_buffer == NULL || *s_buffer == '\0') {
         return FALSE;
     }
 
