@@ -13,11 +13,12 @@
 
 #define SET(ary, start, count, value) (put_values((ary), (start), (count), (value)))
 
-int put_values(int* arr, int start, int count, int value)
+int put_values(void* arr, int start, int count, int value)
 {
     size_t i;
+    int* p = (int*)arr;
     for (i = start; i < count + start; ++i) {
-        arr[i] = value;
+        p[i] = value;
     }
     return count;
 }
