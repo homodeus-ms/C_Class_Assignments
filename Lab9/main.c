@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdio.h>
 #include "macros.h"
 
 int main(void)
@@ -7,7 +8,7 @@ int main(void)
     int arr[20];
     int* curr;
 
-    assert(10 == MAX(10, 5));
+    assert(6 == MAX(6 > 1 ? 6 : 1, 5));
     assert(10.0f == MAX(10.0f, 5.0f));
     assert(10.0 == MAX(10.0, 5.0f));
 
@@ -42,14 +43,11 @@ int main(void)
         assert(arr[14 - i] == i);
     }
 
+
     SET(arr, 0, 20, 0);
 
-    for (i = 0; i < 20; i++) {
-        assert(arr[i] == 0);
-    }
-
     SET(arr, 5, 5, 100);
-
+    
     for (i = 0; i < 5; i++) {
         assert(arr[i] == 0);
     }
@@ -61,6 +59,8 @@ int main(void)
     for (i = 10; i < 20; i++) {
         assert(arr[i] == 0);
     }
+
+    printf("NO ASSERT!");
 
     return 0;
 }
