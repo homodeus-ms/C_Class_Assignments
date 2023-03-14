@@ -1,16 +1,6 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-int put_values_into_array(void* arr, int start, int count, int value)
-{
-    size_t i;
-    int* p = (int*)arr;
-    for (i = start; i < count + start; ++i) {
-        p[i] = value;
-    }
-    return count;
-}
-
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 
 #define MIN(x, y) ((x) > (y) ? (y) : (x))
@@ -21,6 +11,8 @@ int put_values_into_array(void* arr, int start, int count, int value)
 
 #define RANGE_DESC(curr, max, min) for ((curr) = (max); (curr) >= (min); --(curr))
 
-#define SET(ary, start, count, value) (put_values_into_array((ary), (start), (count), (value)))
+#define SET(ary, start, count, value) (get_bool_from_count_make_arr((ary), (start), (count), (value)))
+    
+int get_bool_from_count_make_arr(void* arr, int start, int count, int value);
 
 #endif /* MACROS_H */
