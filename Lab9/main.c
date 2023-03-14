@@ -43,14 +43,27 @@ int main(void)
         assert(arr[14 - i] == i);
     }
 
+    if 
+        SET(arr, 0, 20, 0);
+    else
+        i = 5;
 
-    SET(arr, 0, 20, 0);
+    for (i = 0; i < 20; i++) {
+        printf("%d ", arr[i]);
+    }
+    puts("");
+    
 
     SET(arr, 5, 5, 100);
     
     for (i = 0; i < 5; i++) {
         assert(arr[i] == 0);
     }
+
+    for (i = 0; i < 20; i++) {
+        printf("%d ", arr[i]);
+    }
+    puts("");
 
     for (i = 5; i < 10; i++) {
         assert(arr[i] == 100);
