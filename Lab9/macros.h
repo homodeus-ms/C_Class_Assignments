@@ -11,9 +11,9 @@
 
 #define RANGE_DESC(curr, max, min) for ((curr) = (max); (curr) >= (min); --(curr))
 
-#define SET(ary, start, count, value) (put_values((ary), (start), (count), (value)))
+#define SET(ary, start, count, value) (put_values_into_array((ary), (start), (count), (value)))
 
-int put_values(void* arr, int start, int count, int value)
+int put_values_into_array(void* arr, int start, int count, int value)
 {
     size_t i;
     int* p = (int*)arr;
