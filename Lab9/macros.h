@@ -16,9 +16,9 @@
     {                                                                                                \
         size_t temp_idx;                                                                        \
         for (temp_idx = (start); temp_idx < ((start) + (count)); ++temp_idx) {    \
-            (ary)[temp_idx] = (value);                                                          \
+            (ary)[temp_idx] = (value);                                                         \
         }                                                                                            \
-    } if (0)                                                                                         \
+    } if (count)                                                                                    \
 
 
 #endif /* MACROS_H */
