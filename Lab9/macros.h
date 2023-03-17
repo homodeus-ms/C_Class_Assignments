@@ -5,7 +5,7 @@
 
 #define MIN(x, y) ((x) > (y) ? (y) : (x))
 
-#define ABS(x) ((x) < (0) ? -1 * (x) : (x))
+#define ABS(x) ((x) < (0) ? (-1 * (x)) : (x))
 
 #define RANGE(curr, min, max) for ((curr) = (min); (curr) <= (max); ++(curr))
 
@@ -18,7 +18,9 @@
         for (temp_idx = (start); temp_idx < ((start) + (count)); ++temp_idx) {    \
             (ary)[temp_idx] = (value);                                                         \
         }                                                                                            \
-    } if (count)                                                                                    \
+    } if (count)                                                                                   \
+
+
 
 
 #endif /* MACROS_H */
