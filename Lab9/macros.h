@@ -12,9 +12,9 @@
 #define RANGE_DESC(curr, max, min) for ((curr) = (max); (curr) >= (min); --(curr))
 
 #define SET(ary, start, count, value) \
-    (do {size_t idx; \
-    for (idx = (start); idx < ((start) + (count)); ++i) \
-        (ary)[idx] = (value);} while(0)) \
+    do {size_t idx; \
+    for (idx = (start); idx < ((start) + (count)); ++idx) \
+        (ary)[idx] = (value);} while(0) \
 
 
 
