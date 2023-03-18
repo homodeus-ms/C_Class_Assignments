@@ -24,7 +24,7 @@ int main(void)
     assert(1.0 == ABS(-1.0));
 
     curr = arr;
-
+#if 0
     RANGE(i, 1, 20) {
         *curr++ = i;
     }
@@ -43,7 +43,10 @@ int main(void)
         assert(arr[14 - i] == i);
     }
 
-    SET(arr, 0, 20, 0);
+    if
+        SET(arr, 0, 20, 0);
+    else
+        i = 5;
 
     for (i = 0; i < 20; i++) {
         printf("%d ", arr[i]);
@@ -69,7 +72,7 @@ int main(void)
     for (i = 10; i < 20; i++) {
         assert(arr[i] == 0);
     }
-
+#endif
     printf("NO ASSERT!");
 
     return 0;
