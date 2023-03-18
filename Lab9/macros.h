@@ -11,14 +11,10 @@
 
 #define RANGE_DESC(curr, max, min) for ((curr) = (max); (curr) >= (min); --(curr))
 
-#define SET(ary, start, count, value)                                                       \
-    (1); \
-    {                                                                                                \
-        size_t temp_idx;                                                                        \
-        for (temp_idx = (start); temp_idx < ((start) + (count)); ++temp_idx) {    \
-            (ary)[temp_idx] = (value);                                                         \
-        }                                                                                            \
-    } if (count)  \
+#define SET(ary, start, count, value) \
+    (do {size_t idx; \
+    for (idx = (start); idx < ((start) + (count)); ++i) \
+        (ary)[idx] = (value);} while(0)) \
 
 
 
