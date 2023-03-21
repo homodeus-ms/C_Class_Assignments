@@ -69,6 +69,7 @@ bool complete_todo(todo_list_t* todo_list)
     idx = get_index_highest_priority(todo_list);
 
     todo_list->tasks[idx] = todo_list->tasks[todo_list->max_count - 1];
+    todo_list->tasks[todo_list->max_count - 1] = NULL;
     todo_list->priorities[idx] = todo_list->priorities[todo_list->max_count - 1];
     todo_list->priorities[todo_list->max_count - 1] = INT32_MIN;
     todo_list->count--;
