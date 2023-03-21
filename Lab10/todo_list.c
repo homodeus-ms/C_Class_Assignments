@@ -3,14 +3,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "todo_list.h"
 
 todo_list_t init_todo_list(size_t max_size)
 {
     todo_list_t new_list;
-    const char** new_tasks;
+    char** new_tasks;
     int32_t* new_priorities;
+
     new_tasks = malloc(max_size * sizeof(char*));
     new_priorities = malloc(max_size * sizeof(int32_t));
 
@@ -24,6 +26,11 @@ todo_list_t init_todo_list(size_t max_size)
 
 void finalize_todo_list(todo_list_t* todo_list)
 {
+    size_t i;
+    for (i = 0; i < todo_list->count; ++i) {
+        free(todo_list->tasks[i]);
+    }
+
     free(todo_list->tasks);
     free(todo_list->priorities);
 }
@@ -34,7 +41,19 @@ bool add_todo(todo_list_t* todo_list, const int32_t priority, const char* task)
         return false;
     }
 
-    todo_list->tasks[todo_list->count] = task;
+    size_t str_len = strlen(task);
+    char* buffer;
+    buffer = malloc(str_len + 1);
+    
+    const char* p = task;
+    char* q = buffer;
+
+    while (*p != 0) {
+        *q++ = *p++;
+    }
+    *q = '\0';
+
+    todo_list->tasks[todo_list->count] = buffer;
     todo_list->priorities[todo_list->count++] = priority;
 
     return true;

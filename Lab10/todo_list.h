@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 typedef struct todo_list {
-    const char** tasks;
+    char** tasks;
     int32_t* priorities;
     size_t count;
     size_t max_count;
