@@ -60,6 +60,6 @@ int main(void)
 
     printf("No Assert!\n");
 
-	return 0;
+    return 0;
 }
 

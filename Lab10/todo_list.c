@@ -7,12 +7,14 @@
 
 #include "todo_list.h"
 
+enum { TODO_LIST_SIZE = 16 };
+
 todo_list_t init_todo_list(size_t max_size)
 {
     todo_list_t new_list;
     char** new_tasks;
     int32_t* new_priorities;
-
+    
     new_tasks = malloc(max_size * sizeof(char*));
     new_priorities = malloc(max_size * sizeof(int32_t));
 
@@ -27,6 +29,7 @@ todo_list_t init_todo_list(size_t max_size)
 void finalize_todo_list(todo_list_t* todo_list)
 {
     size_t i;
+
     for (i = 0; i < todo_list->count; ++i) {
         free(todo_list->tasks[i]);
     }
@@ -67,6 +70,8 @@ bool complete_todo(todo_list_t* todo_list)
     
     size_t idx;
     idx = get_index_highest_priority(todo_list);
+
+    free(todo_list->tasks[idx]);
 
     todo_list->tasks[idx] = todo_list->tasks[todo_list->max_count - 1];
     todo_list->tasks[todo_list->max_count - 1] = NULL;
