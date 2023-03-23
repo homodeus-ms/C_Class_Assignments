@@ -68,15 +68,20 @@ bool complete_todo(todo_list_t* todo_list)
         return false;
     }
     
+    size_t i;
     size_t idx;
     idx = get_index_highest_priority(todo_list);
 
     free(todo_list->tasks[idx]);
+    todo_list->tasks[idx] = NULL;
 
-    todo_list->tasks[idx] = todo_list->tasks[todo_list->max_count - 1];
-    todo_list->tasks[todo_list->max_count - 1] = NULL;
-    todo_list->priorities[idx] = todo_list->priorities[todo_list->max_count - 1];
-    todo_list->priorities[todo_list->max_count - 1] = INT32_MIN;
+    for (i = idx; i < (todo_list->count) - 1; ++i) {
+        todo_list->tasks[i] = todo_list->tasks[i + 1];
+        todo_list->priorities[i] = todo_list->priorities[i + 1];
+    }
+    todo_list->tasks[i] = NULL;
+    todo_list->priorities[i] = INT32_MIN;
+
     todo_list->count--;
 
     return true;
