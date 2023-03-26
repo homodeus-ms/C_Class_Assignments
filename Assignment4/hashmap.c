@@ -16,8 +16,6 @@ hashmap_t* init_hashmap_malloc(size_t length, unsigned int (*p_hash_func)(const 
     
         return new_map;
     }
-    
-    length = get_prime_number(length);
 
     node_t** new_list;
     new_list = malloc(length * sizeof(node_t*));
@@ -160,39 +158,6 @@ void destroy(hashmap_t* hashmap)
 size_t get_hash_idx(size_t n, size_t d)
 {
     return n % d;
-}
-
-size_t is_prime_number(size_t n)
-{
-    size_t i;
-    size_t is_prime_number = TRUE;
-
-    for (i = 3; i < n / 2; i += 2) {
-        if (n % 2 == 0) {
-            is_prime_number = FALSE;
-            break;
-        }
-    }
-
-    return is_prime_number;
-}
-
-size_t get_prime_number(size_t n)
-{
-    n = n * 2 + 1;
-    
-    if (is_prime_number(n)) {
-        return n;
-    }
-
-    while (TRUE) {
-        n += 2;
-        if (is_prime_number(n)) {
-            break;
-        }
-    }
-
-    return n;
 }
 
 node_t* init_new_node_malloc(const char* key, const int value)

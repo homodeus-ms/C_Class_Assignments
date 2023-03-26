@@ -27,10 +27,6 @@ void destroy(hashmap_t* hashmap);
 
 size_t get_hash_idx(size_t n, size_t d);
 
-size_t is_prime_number(size_t n);
-
-size_t get_prime_number(size_t n);
-
 node_t* init_new_node_malloc(const char* key, const int value);
 
 #endif /* HASHMAP_H */
