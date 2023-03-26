@@ -7,6 +7,8 @@
 
 static unsigned int hash_function(const char* key);
 
+void print_node(hashmap_t* hashmap);
+
 int main(void)
 {
     size_t i = 0;
@@ -14,9 +16,7 @@ int main(void)
 
     hashmap = init_hashmap_malloc(DEFAULT_ARRAY_LENGTH, hash_function);
 
-
-
-
+#if 1
     for (i = 0; i < 100; ++i) {
         char key[100];
         int value = (int)i;
@@ -36,7 +36,8 @@ int main(void)
         c = get_value(hashmap, key);
         assert(c == value);
     }
-
+    
+    
 
     for (i = 0; i < 100; ++i) {
         char key[100];
@@ -51,7 +52,7 @@ int main(void)
         assert(c == value);
     }
 
-
+    
 
     for (i = 0; i < 100; ++i) {
         char key[100];
@@ -66,10 +67,14 @@ int main(void)
 
         assert(remove_key(hashmap, key) == FALSE);
     }
+    
 
     for (i = 0; i < DEFAULT_ARRAY_LENGTH; ++i) {
         assert((hashmap->plist)[i] == NULL);
     }
+#endif
+
+    
 
     destroy(hashmap);
 
@@ -89,4 +94,22 @@ static unsigned int hash_function(const char* key)
 
     return code;
 }
+
+void print_node(hashmap_t* hashmap)
+{
+    size_t i;
+    node_t* p;
+
+    for (i = 0; i < hashmap->length; ++i) {
+        p = hashmap->plist[i];
+        while (p != NULL) {
+            printf("[idx : %d] [key : %s] [value : %d]\n", i, p->key, p->value);
+            p = p->next;
+        }  
+        puts("");
+    }
+}
+
+
+
 

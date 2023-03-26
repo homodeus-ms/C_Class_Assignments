@@ -66,7 +66,7 @@ int add_key(hashmap_t* hashmap, const char* key, const int value)
 
     new_node = init_new_node_malloc(key, value);
     keep_p->next = new_node;
-
+    
     return TRUE;
 }
 
@@ -118,13 +118,15 @@ int remove_key(hashmap_t* hashmap, const char* key)
     idx = get_hash_idx(idx, hashmap->length);
 
     node_t** pp = &(hashmap->plist[idx]);
-
+    
     while (*pp != NULL) {
-        node_t** tmp = pp;
+        node_t* tmp = *pp;
 
         if (!strcmp((*pp)->key, key)) {
             *pp = (*pp)->next;
-            free(*tmp);
+            
+            free(tmp->key);
+            free(tmp);
             
             return TRUE;
         }
