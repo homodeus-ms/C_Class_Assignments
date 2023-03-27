@@ -1,5 +1,5 @@
-#ifndef DATASTORE_H
-#define DATASTORE_H
+#ifndef DATA_STORE_H
+#define DATA_STORE_H
 
 #include "user.h"
 
@@ -14,6 +14,6 @@ int update_email(user_t** users_or_null, unsigned int id, const char* email);
 
 int update_password(user_t** users_or_null, unsigned int id, const char* password);
 
-void convert_str_to_hide_mode(char* str, char mark);
+void convert_str_to_release_mode(char* str, char mark);
 
-#endif /* DATASTORE_H */
+#endif /* DATA_STORE_H */

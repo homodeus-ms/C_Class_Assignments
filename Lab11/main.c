@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "user.h"
 #include "data_store.h"
 
 static user_t** get_test_users_malloc(void);
