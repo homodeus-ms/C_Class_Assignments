@@ -4,7 +4,11 @@
 
 #include "data_store.h"
 
+#ifdef RELEASE
+
 static void convert_str_to_release_mode(char* str, char mark);
+
+#endif
 
 user_t* get_user_by_id_or_null(user_t** users_or_null, unsigned int id)
 {
