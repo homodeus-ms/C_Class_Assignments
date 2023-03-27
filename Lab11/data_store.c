@@ -4,6 +4,8 @@
 
 #include "data_store.h"
 
+static void convert_str_to_release_mode(char* str, char mark);
+
 user_t* get_user_by_id_or_null(user_t** users_or_null, unsigned int id)
 {
     if (users_or_null == NULL) {
@@ -122,7 +124,7 @@ int update_password(user_t** users_or_null, unsigned int id, const char* passwor
     return TRUE;
 }
 
-void convert_str_to_release_mode(char* str, char mark)
+static void convert_str_to_release_mode(char* str, char mark)
 {
     char first_letter = *str;
     
