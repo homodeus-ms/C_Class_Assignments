@@ -6,7 +6,27 @@
 
 #ifdef RELEASE
 
-static void convert_str_to_release_mode(char* str, char mark);
+static void convert_str_to_release_mode(char* str, char mark)
+{
+    char first_letter = *str;
+    
+    char* p = str;
+    char* p_next = str + 1;
+
+    while (*p_next != mark) {
+        *p++ = '*';
+        ++p_next;
+    }
+
+    if (p == str) {
+        *str = '*';
+        return;
+    } else {
+        *str = first_letter;
+    }
+
+    *(str + 1) = '*';
+}
 
 #endif
 
@@ -128,27 +148,8 @@ int update_password(user_t** users_or_null, unsigned int id, const char* passwor
     return TRUE;
 }
 
-static void convert_str_to_release_mode(char* str, char mark)
-{
-    char first_letter = *str;
-    
-    char* p = str;
-    char* p_next = str + 1;
 
-    while (*p_next != mark) {
-        *p++ = '*';
-        ++p_next;
-    }
 
-    if (p == str) {
-        *str = '*';
-        return;
-    } else {
-        *str = first_letter;
-    }
-
-    *(str + 1) = '*';
-}
 
 
         
